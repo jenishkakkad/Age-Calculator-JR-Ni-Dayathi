@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beautiful Age Calculator</title>
+  <style>
+    /* Background and overall body styling */
+    body {
+      background: linear-gradient(to right, #74ABE2, #5563DE);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    /* Calculator container styling */
+    .calculator {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      backdrop-filter: blur(10px);
+      max-width: 400px;
+      width: 90%;
+    }
+    /* Heading styling */
+    .calculator h1 {
+      margin-bottom: 20px;
+      font-size: 32px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    /* Date input styling */
+    .calculator input[type="date"] {
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      width: 100%;
+      margin-bottom: 15px;
+      font-size: 16px;
+      outline: none;
+    }
+    /* Button styling */
+    .calculator button {
+      padding: 12px;
+      width: 100%;
+      background: #fff;
+      color: #5563de;
+      border: none;
+      border-radius: 5px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .calculator button:hover {
+      background: #f1f1f1;
+      transform: scale(1.05);
+    }
+    /* Result display styling with fade-in effect */
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 5px;
+      font-size: 20px;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+    .result.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h1>Age Calculator</h1>
+    <input type="date" id="birthDate" />
+    <button onclick="calculateAge()">Calculate Age</button>
+    <div class="result" id="result"></div>
+  </div>
+  <script>
+    function calculateAge() {
+      // Get the birth date value from the input
+      const birthDateValue = document.getElementById('birthDate').value;
+      const resultDiv = document.getElementById('result');
+      
+      // Check if a date is selected
+      if (!birthDateValue) {
+        resultDiv.innerText = 'Please select a birth date.';
+        resultDiv.classList.add('show');
+        return;
+      }
+      
+      // Convert input to a Date object
+      const birthDate = new Date(birthDateValue);
+      const today = new Date();
+      
+      // Calculate initial differences
+      let ageYears = today.getFullYear() - birthDate.getFullYear();
+      let ageMonths = today.getMonth() - birthDate.getMonth();
+      let ageDays = today.getDate() - birthDate.getDate();
+      
+      // Adjust days if current day is less than birth day
+      if (ageDays < 0) {
+        ageMonths--;
+        // Get the number of days in the previous month
+        const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        ageDays += prevMonth.getDate();
+      }
+      
+      // Adjust months if current month is less than birth month
+      if (ageMonths < 0) {
+        ageYears--;
+        ageMonths += 12;
+      }
+      
+      // Create the result message
+      resultDiv.innerText = `You are ${ageYears} years, ${ageMonths} months, and ${ageDays} days old.`;
+      resultDiv.classList.add('show');
+    }
+  </script>
+</body>
+</html>
